@@ -70,6 +70,18 @@ public class Animal {
         System.out.println("Животное уснуло!");
     }
 
+    public void toGo() {
+        System.out.println("Животное идет");
+    }
+
+    public void fly() {
+        System.out.println("Животное летит");
+    }
+
+    public void swim() {
+        System.out.println("Животное плывет");
+    }
+
     @Override
     public String toString() {
         return String.format("nickName = %s, bd = %s, owner = %s, illness = %s", nickName, birthDate, owner, illness);

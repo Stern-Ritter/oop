@@ -1,4 +1,7 @@
-package ru.gb.clinic;
+package ru.gb.clinic.patients;
+
+import ru.gb.clinic.illnesses.Illness;
+import ru.gb.clinic.owners.Owner;
 
 import java.time.LocalDate;
 

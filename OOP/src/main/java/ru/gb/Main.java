@@ -1,8 +1,8 @@
 package ru.gb;
 
-import ru.gb.clinic.Animal;
-import ru.gb.clinic.Hummingbird;
-import ru.gb.clinic.Penguin;
+import ru.gb.clinic.patients.Animal;
+import ru.gb.clinic.patients.Hummingbird;
+import ru.gb.clinic.patients.Penguin;
 
 public class Main {
     public static void main(String[] args) {

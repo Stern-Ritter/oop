@@ -1,4 +1,4 @@
-package ru.gb.clinic;
+package ru.gb.clinic.owners;
 
 public class Owner {
     String fullName;

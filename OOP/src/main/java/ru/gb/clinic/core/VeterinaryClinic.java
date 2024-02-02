@@ -1,5 +1,6 @@
-package ru.gb.clinic;
+package ru.gb.clinic.core;
 
+import ru.gb.clinic.core.Clinic;
 import ru.gb.clinic.patients.Animal;
 import ru.gb.clinic.patients.Flyable;
 import ru.gb.clinic.patients.Goable;

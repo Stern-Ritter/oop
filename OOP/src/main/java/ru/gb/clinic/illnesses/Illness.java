@@ -1,4 +1,4 @@
-package ru.gb.clinic;
+package ru.gb.clinic.illnesses;
 
 public class Illness {
     String title;

@@ -13,15 +13,41 @@ import ru.gb.clinic.patients.impl.Hummingbird;
 import ru.gb.clinic.patients.impl.Penguin;
 import ru.gb.clinic.staff.impl.Doctor;
 import ru.gb.clinic.staff.impl.Nurse;
+import ru.gb.list.MyLinkedList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.sql.SQLOutput;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        secondTask();
+        testMyLinkedList();
+    }
+
+    private static void testMyLinkedList() {
+        MyLinkedList<Integer> myList = new MyLinkedList<>();
+        myList.add(1);
+        myList.addAll(List.of(2, 4));
+        myList.add(2, 3);
+        myList.add(4);
+        myList.set(4, 5);
+        myList.addFirst(0);
+        myList.addFirst(-1);
+        myList.remove(-1);
+        myList.remove(3);
+        myList.remove(5);
+
+        System.out.println("myList.get(0) = " + myList.get(0));
+        System.out.println("myList.get(3) = " + myList.get(3));
+        System.out.println("myList.contains(0) = " + myList.contains(0));
+        System.out.println("myList.contains(5) = " + myList.contains(5));
+
+        System.out.println("myList.isEmpty() = " + myList.isEmpty());
+        System.out.println("myList.size() = " + myList.size());
+        System.out.println(myList);
+
+        myList.clear();
+        System.out.println("myList.size() = " + myList.size());
+        System.out.println(myList);
     }
 
     private static void secondTask() {
@@ -44,6 +70,7 @@ public class Main {
         pharmacies.sort(Comparator.comparingDouble(Pharmacy::getWeight));
         System.out.println(pharmacies);
     }
+
     private static void firstTask() {
         Clinic clinic = new VeterinaryClinic();
 

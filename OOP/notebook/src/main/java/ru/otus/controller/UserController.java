@@ -1,20 +1,24 @@
 package ru.otus.controller;
 
 import ru.otus.model.User;
-import ru.otus.model.repository.GBRepository;
+import ru.otus.model.repository.Repository;
+import ru.otus.util.UserValidator;
 
 import java.util.List;
 import java.util.Objects;
 
 public class UserController {
-    private final GBRepository repository;
+    private final UserValidator validator;
+    private final Repository repository;
 
-    public UserController(GBRepository repository) {
+    public UserController(Repository repository) {
+        this.validator = new UserValidator();
         this.repository = repository;
     }
 
     public void saveUser(User user) {
-        repository.create(user);
+        User validatedUser = validator.validate(user);
+        repository.create(validatedUser);
     }
 
     public User readUser(Long userId) throws Exception {
@@ -32,8 +36,12 @@ public class UserController {
         return repository.findAll();
     }
 
-    public void updateUser(String userId, User update) {
-        update.setId(Long.parseLong(userId));
-        repository.update(Long.parseLong(userId), update);
+    public void updateUser(String userId, User updatedUser) {
+        updatedUser.setId(Long.parseLong(userId));
+        repository.update(Long.parseLong(userId), updatedUser);
+    }
+
+    public boolean deleteUser(Long userId) {
+        return repository.delete(userId);
     }
 }

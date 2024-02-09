@@ -3,7 +3,6 @@ package ru.otus.view;
 import ru.otus.controller.UserController;
 import ru.otus.model.User;
 import ru.otus.util.Commands;
-import ru.otus.util.UserValidator;
 
 import java.util.Scanner;
 
@@ -19,29 +18,54 @@ public class UserView {
 
         while (true) {
             String command = prompt("Введите команду: ");
-            com = Commands.valueOf(command);
-            if (com == Commands.EXIT) return;
-            switch (com) {
-                case CREATE:
-                    User u = createUser();
-                    userController.saveUser(u);
-                    break;
-                case READ:
-                    String id = prompt("Идентификатор пользователя: ");
-                    try {
-                        User user = userController.readUser(Long.parseLong(id));
-                        System.out.println(user);
-                        System.out.println();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+            try {
+                com = Commands.valueOf(command);
+                if (com == Commands.EXIT) return;
+                switch (com) {
+                    case CREATE: {
+                        String firstName = prompt("Имя: ");
+                        String lastName = prompt("Фамилия: ");
+                        String phone = prompt("Номер телефона: ");
+                        User user = new User(firstName, lastName, phone);
+                        userController.saveUser(user);
+                        break;
                     }
-                    break;
-                case LIST:
-                    System.out.println(userController.readAll());
-                    break;
-                case UPDATE:
-                    String userId = prompt("Enter user id: ");
-                    userController.updateUser(userId, createUser());
+                    case READ: {
+                        String id = prompt("Идентификатор пользователя: ");
+                        try {
+                            User user = userController.readUser(Long.parseLong(id));
+                            System.out.println(user);
+                            System.out.println();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    }
+                    case LIST: {
+                        System.out.println(userController.readAll());
+                        break;
+                    }
+                    case UPDATE: {
+                        String userId = prompt("Введите id пользователя: ");
+                        String firstName = prompt("Имя: ");
+                        String lastName = prompt("Фамилия: ");
+                        String phone = prompt("Номер телефона: ");
+                        User user = new User(firstName, lastName, phone);
+                        userController.updateUser(userId, user);
+                        break;
+                    }
+                    case DELETE: {
+                        Long userId = Long.parseLong(prompt("Введите id пользователя: "));
+                        boolean deleted = userController.deleteUser(userId);
+                        if (deleted) {
+                            System.out.printf("Пользователь с id: %d удален%n", userId);
+                        } else {
+                            System.out.printf("Пользователь с id: %d не найден%n", userId);
+                        }
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.printf("Некорректная комманда: %s%n", command);
             }
         }
     }
@@ -50,15 +74,5 @@ public class UserView {
         Scanner in = new Scanner(System.in);
         System.out.print(message);
         return in.nextLine();
-    }
-
-    private User createUser() {
-        String firstName = prompt("Имя: ");
-        String lastName = prompt("Фамилия: ");
-        String phone = prompt("Номер телефона: ");
-
-        UserValidator validator = new UserValidator();
-
-        return validator.validate(new User(firstName, lastName, phone));
     }
 }

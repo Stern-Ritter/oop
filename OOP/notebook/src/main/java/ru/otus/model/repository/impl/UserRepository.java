@@ -1,31 +1,28 @@
 package ru.otus.model.repository.impl;
 
 import ru.otus.model.User;
-import ru.otus.model.dao.impl.FileOperation;
-import ru.otus.model.repository.GBRepository;
+import ru.otus.util.helper.impl.BaseFileHelper;
+import ru.otus.model.repository.Repository;
 import ru.otus.util.mapper.impl.UserMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public class UserRepository implements GBRepository {
+public class UserRepository implements Repository {
     private final UserMapper mapper;
-    private final FileOperation operation;
+    private final BaseFileHelper fileHelper;
 
-    public UserRepository(FileOperation operation) {
+    public UserRepository(BaseFileHelper fileHelper) {
         this.mapper = new UserMapper();
-        this.operation = operation;
+        this.fileHelper = fileHelper;
     }
 
     @Override
     public List<User> findAll() {
-        List<String> lines = operation.readAll();
-        List<User> users = new ArrayList<>();
-        for (String line : lines) {
-            users.add(mapper.toOutput(line));
-        }
-        return users;
+        return read();
     }
 
     @Override
@@ -34,7 +31,7 @@ public class UserRepository implements GBRepository {
         long max = 0L;
         for (User u : users) {
             long id = u.getId();
-            if (max < id){
+            if (max < id) {
                 max = id;
             }
         }
@@ -58,13 +55,13 @@ public class UserRepository implements GBRepository {
                         .equals(userId))
                 .findFirst().orElseThrow(() -> new RuntimeException("User not found"));
 
-        if(!update.getFirstName().isEmpty()) {
+        if (!update.getFirstName().isEmpty()) {
             editUser.setFirstName(update.getFirstName());
         }
-        if(!update.getLastName().isEmpty()) {
+        if (!update.getLastName().isEmpty()) {
             editUser.setLastName(update.getLastName());
         }
-        if(!update.getPhone().isEmpty()) {
+        if (!update.getPhone().isEmpty()) {
             editUser.setPhone(update.getPhone());
         }
         write(users);
@@ -72,16 +69,45 @@ public class UserRepository implements GBRepository {
     }
 
     @Override
-    public boolean delete(Long id) {
-        return false;
+    public boolean delete(Long userId) {
+        List<User> users = findAll();
+        boolean deleted = false;
+        Iterator<User> iterator = users.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            if (user.getId().equals(userId)) {
+                iterator.remove();
+                deleted = true;
+            }
+        }
+        write(users);
+
+        return deleted;
+    }
+
+    private List<User> read() {
+        try {
+            List<String> lines = fileHelper.readFile();
+            List<User> users = new ArrayList<>();
+            for (String line : lines) {
+                users.add(mapper.toOutput(line));
+            }
+            return users;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void write(List<User> users) {
-        List<String> lines = new ArrayList<>();
-        for (User u: users) {
-            lines.add(mapper.toInput(u));
+        try {
+            List<String> lines = new ArrayList<>();
+            for (User u : users) {
+                lines.add(mapper.toInput(u));
+            }
+            fileHelper.writeFile(lines);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        operation.saveAll(lines);
     }
 
 }

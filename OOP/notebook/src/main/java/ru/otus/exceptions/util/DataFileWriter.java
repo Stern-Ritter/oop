@@ -12,8 +12,9 @@ public class DataFileWriter implements FileWriter {
     @Override
     public void writeData(String fileName, String data) {
         String path = String.format("%s/%s.txt", FOLDER_NAME, fileName);
-        try (var writer = new BufferedWriter(new java.io.FileWriter(path, false))) {
+        try (var writer = new BufferedWriter(new java.io.FileWriter(path, true))) {
             writer.write(data);
+            writer.newLine();
         } catch (IOException ex) {
             throw new WriteDataException(WRITE_DATA_EXCEPTION_TEMPLATE);
         }

@@ -1,6 +1,13 @@
 package ru.otus.exceptions.view;
 
-import ru.otus.exceptions.exception.*;
+import ru.otus.exceptions.exception.BirthDayFormatException;
+import ru.otus.exceptions.exception.GenderFormatException;
+import ru.otus.exceptions.exception.InputLengthException;
+import ru.otus.exceptions.exception.InputReadException;
+import ru.otus.exceptions.exception.NameFormatException;
+import ru.otus.exceptions.exception.PhoneFormatException;
+import ru.otus.exceptions.exception.WriteDataException;
+import ru.otus.exceptions.util.DataFormatter;
 import ru.otus.exceptions.util.FileWriter;
 import ru.otus.exceptions.util.InputReader;
 import ru.otus.exceptions.validator.InputValidator;
@@ -14,11 +21,13 @@ public class View {
     private final InputReader inputReader;
     private final InputValidator inputValidator;
     private final FileWriter fileWriter;
+    private final DataFormatter dataFormatter;
 
-    public View(InputReader inputReader, InputValidator inputValidator, FileWriter fileWriter) {
+    public View(InputReader inputReader, InputValidator inputValidator, FileWriter fileWriter, DataFormatter dataFormatter) {
         this.inputReader = inputReader;
         this.inputValidator = inputValidator;
         this.fileWriter = fileWriter;
+        this.dataFormatter = dataFormatter;
     }
 
     public void setup() {
@@ -30,10 +39,11 @@ public class View {
                 }
 
                 String[] inputParts = input.split(INPUT_DELIMITER);
-                String fileName = inputParts[0];
-
                 inputValidator.validate(inputParts);
-                fileWriter.writeData(fileName, input);
+
+                String fileName = inputParts[0];
+                String data = dataFormatter.format(inputParts);
+                fileWriter.writeData(fileName, data);
             } catch (InputReadException | WriteDataException | InputLengthException | NameFormatException |
                      BirthDayFormatException | PhoneFormatException | GenderFormatException ex) {
                 System.out.println(ex.getMessage());

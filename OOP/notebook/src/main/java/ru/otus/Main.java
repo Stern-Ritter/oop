@@ -1,6 +1,8 @@
 package ru.otus;
 
+import ru.otus.exceptions.util.BasicDataFormatter;
 import ru.otus.exceptions.util.DataFileWriter;
+import ru.otus.exceptions.util.DataFormatter;
 import ru.otus.exceptions.util.FileWriter;
 import ru.otus.exceptions.util.InputReader;
 import ru.otus.exceptions.util.TerminalInputReader;
@@ -26,8 +28,9 @@ public class Main {
         InputReader inputReader = new TerminalInputReader();
         InputValidator inputValidator = new TerminalInputValidator();
         FileWriter fileWriter = new DataFileWriter();
+        DataFormatter dataFormatter = new BasicDataFormatter();
 
-        View view = new View(inputReader, inputValidator, fileWriter);
+        View view = new View(inputReader, inputValidator, fileWriter, dataFormatter);
         view.setup();
     }
 

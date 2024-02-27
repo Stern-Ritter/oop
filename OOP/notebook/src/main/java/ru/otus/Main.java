@@ -1,15 +1,15 @@
 package ru.otus;
 
-import ru.otus.controller.UserController;
-import ru.otus.util.helper.impl.BaseFileHelper;
-import ru.otus.model.repository.Repository;
-import ru.otus.model.repository.impl.UserRepository;
-import ru.otus.view.UserView;
+import ru.otus.oop.controller.UserController;
+import ru.otus.oop.util.helper.impl.BaseFileHelper;
+import ru.otus.oop.model.repository.Repository;
+import ru.otus.oop.model.repository.impl.UserRepository;
+import ru.otus.oop.view.UserView;
 
 import java.io.IOException;
 
-import static ru.otus.util.DBConnector.DB_PATH;
-import static ru.otus.util.DBConnector.createDB;
+import static ru.otus.oop.util.DBConnector.DB_PATH;
+import static ru.otus.oop.util.DBConnector.createDB;
 
 public class Main {
     public static void main(String[] args) {

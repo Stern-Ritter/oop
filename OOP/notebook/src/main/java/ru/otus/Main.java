@@ -1,5 +1,12 @@
 package ru.otus;
 
+import ru.otus.exceptions.util.DataFileWriter;
+import ru.otus.exceptions.util.FileWriter;
+import ru.otus.exceptions.util.InputReader;
+import ru.otus.exceptions.util.TerminalInputReader;
+import ru.otus.exceptions.validator.InputValidator;
+import ru.otus.exceptions.validator.TerminalInputValidator;
+import ru.otus.exceptions.view.View;
 import ru.otus.oop.controller.UserController;
 import ru.otus.oop.util.helper.impl.BaseFileHelper;
 import ru.otus.oop.model.repository.Repository;
@@ -13,7 +20,15 @@ import static ru.otus.oop.util.DBConnector.createDB;
 
 public class Main {
     public static void main(String[] args) {
-        run();
+        setup();
+    }
+    private static void setup() {
+        InputReader inputReader = new TerminalInputReader();
+        InputValidator inputValidator = new TerminalInputValidator();
+        FileWriter fileWriter = new DataFileWriter();
+
+        View view = new View(inputReader, inputValidator, fileWriter);
+        view.setup();
     }
 
     private static void run() {
